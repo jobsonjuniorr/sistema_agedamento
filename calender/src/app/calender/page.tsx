@@ -2,21 +2,22 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
-import {enUS, ptBR } from 'date-fns/locale';
+import { ptBR } from 'date-fns/locale';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import EventModal from '@/components/popup'; // Modal para editar eventos
-import CreateEventModal from '@/components/create-event-modal'; // Modal para criar eventos
-import EventPopup from '@/components/schedules'; // Popup de eventos ocultos
-
+import EventModal from '@/components/popup';
+import CreateEventModal from '@/components/create-event-modal';
+import EventPopup from '@/components/schedules';
+import  {Button}  from '@/components/ui/button';
+import { useTheme } from '@/theremcontext';
+import ThemeToggleButton from '@/components/ui/buttondark';
 const locales = {
-  'en-Us': enUS,
   'pt-BR': ptBR,
 };
 
 const localizer = dateFnsLocalizer({
   format,
   parse,
-  startOfWeek,
+  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 0, locale: ptBR }),
   getDay,
   locales,
 });
@@ -29,6 +30,7 @@ interface Event {
 }
 
 const CalendarStructure: React.FC = () => {
+  const { isDarkMode } = useTheme();
   const [events, setEvents] = useState<Event[]>([]);
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -36,33 +38,47 @@ const CalendarStructure: React.FC = () => {
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [showMoreEvents, setShowMoreEvents] = useState<Event[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-  
-  const fetchUsers = async () => {
+
+  const fetchEvents = async () => {
+    const token = localStorage.getItem('token');
+    //remove caso erros 
+    if(!token){
+      console.error("Token não encontrado, o usuário precisa fazer login novamente.");
+       return;
+    }
     try {
-      const response = await fetch('http://localhost:5000/events');
+      const response = await fetch('http://localhost:5000/events', {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Enviar o token no cabeçalho
+        }
+      });
       if (!response.ok) {
-        throw new Error('Erro ao buscar dados');
+        if (response.status === 401) {
+          alert('Sessão expirada ou token inválido. Faça login novamente.');
+        } else {
+          throw new Error('Erro ao buscar dados');
+        }
       }
       const data = await response.json();
-  
-      // Certificar que os eventos têm o formato correto
+
+
       const formattedEvents = data.map((event: any) => ({
         ...event,
         start: new Date(event.start),
         end: new Date(event.end),
       }));
-  
+
       setEvents(formattedEvents);
     } catch (error) {
       console.error('Erro ao carregar eventos:', error);
     }
   };
-  
+
   const addOrUpdateEvent = async (updatedEvent: { title: string; start: string; end: string }) => {
     const { title, start, end } = updatedEvent;
     const startDate = new Date(start);
     const endDate = new Date(end);
-  
+    const token = localStorage.getItem('token');
     if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
       try {
         if (selectedEvent) {
@@ -73,44 +89,44 @@ const CalendarStructure: React.FC = () => {
               : event
           );
           setEvents(updatedEvents);
-  
-          // Enviar atualização ao backend
+
+
           const response = await fetch(`http://localhost:5000/events/${selectedEvent.id}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ title, start: startDate.toISOString(), end: endDate.toISOString() }),
           });
-  
+
           if (!response.ok) {
             throw new Error('Erro ao atualizar evento');
           }
-  
+
           const updatedEventFromServer = await response.json();
           setSelectedEvent(null);
         } else {
-          // Criar novo evento
+
           const newEventWithId: Event = { id: events.length + 1, title, start: startDate, end: endDate };
           setEvents([...events, newEventWithId]);
-  
-          // Enviar novo evento ao backend
+
+
           const response = await fetch('http://localhost:5000/events', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
             },
             body: JSON.stringify({ title, start: startDate.toISOString(), end: endDate.toISOString() }),
           });
-  
+
           if (!response.ok) {
             throw new Error('Erro ao criar evento');
           }
-  
           const createdEventFromServer = await response.json();
-
         }
-  
+
         setShowEditModal(false);
         setShowCreateModal(false);
       } catch (error) {
@@ -127,23 +143,26 @@ const CalendarStructure: React.FC = () => {
   };
 
   const removeEvent = async (eventId: number) => {
+    const token = localStorage.getItem('token');
     try {
       const response = await fetch(`http://localhost:5000/events/${eventId}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+
+        }
       });
-  
+
       if (!response.ok) {
         throw new Error('Erro ao deletar evento');
       }
-  
-      // Remover o evento localmente após a exclusão no backend
+
       setEvents(events.filter(event => event.id !== eventId));
       setShowEditModal(false);
     } catch (error) {
       console.error(error);
     }
   };
-  
 
   const selectEvent = (event: Event) => {
     setSelectedEvent(event);
@@ -154,58 +173,89 @@ const CalendarStructure: React.FC = () => {
     setShowMoreEvents(eventsToShow);
     setIsPopupOpen(true);
   };
-  useEffect(()=>{
-    fetchUsers();
-  },[])
+
+  useEffect(() => {
+    fetchEvents();
+    document.body.className = isDarkMode ? 'dark-mode' : '';
+  }, [isDarkMode]);
 
   return (
-    <div>
-      <div className="mb-4">
-        <h2>Adicionar Horário</h2>
-        <button onClick={openCreateModal} className="bg-green-500 text-white px-4 py-2 rounded duration-200 hover:bg-gray-400">
-          Criar Evento
-        </button>
-        <EventPopup
+    <div className='w-full h-screen duration-300'>
+      {/* Modal de criação de eventos */}
+      <CreateEventModal
+        isOpen={showCreateModal}
+        onClose={() => setShowCreateModal(false)}
+        onSave={addOrUpdateEvent}
+        isDarkMode={isDarkMode} 
+      />
+      <EventPopup
         isOpen={isPopupOpen}
         events={showMoreEvents}
         onClose={() => setIsPopupOpen(false)}
         onSelectEvent={(event) => {
           selectEvent(event);
           setIsPopupOpen(false);
+          
         }}
       />
 
-        {/* Modal de edição de eventos */}
-        <EventModal
-          isOpen={showEditModal}
-          event={selectedEvent}
-          onClose={() => setShowEditModal(false)}
-          onSave={addOrUpdateEvent}
-          onDelete={()=>{
-            if(selectedEvent){
-              removeEvent(selectedEvent.id)
-            }
-          }}
-        />
-
-        {/* Modal de criação de eventos */}
-        <CreateEventModal
-          isOpen={showCreateModal}
-          onClose={() => setShowCreateModal(false)}
-          onSave={addOrUpdateEvent}
-        />
-      </div>
-
+      {/* Modal de edição de eventos */}
+      <EventModal
+        isOpen={showEditModal}
+        event={selectedEvent}
+        onClose={() => setShowEditModal(false)}
+        onSave={addOrUpdateEvent}
+        isDarkMode={isDarkMode} 
+        onDelete={() => {
+          if (selectedEvent) {
+            removeEvent(selectedEvent.id);
+          }
+        }}
+      />
       <Calendar
         localizer={localizer}
         events={events}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: 500 }}
+        style={{ height: '100%', width:'100%'}}
         onSelectEvent={selectEvent}
         onShowMore={(events, date) => handleShowMore(events)} // Lidando com "more"
+        className='.rbc-month-view'
+        views={['month', 'agenda']}
+        step={60}
+        culture='pt-BR'
+        defaultView="month"
+        defaultDate={new Date()}
+        components={{
+          toolbar: (props) => (
+            //grid grid-cols-1 p-4 gap-2 
+            <div className='flex flex-col-reverse items-center  md:flex bg-card md:items-center'>
+               <span className='text-base md:text-xl 2xl:text-3xl font-bold capitalize p-1 2xl:mt-2 2xl:mb-2'>{props.label}</span>
+              <div className='flex flex-col gap-2 md:flex  md:gap-5 md:items-center p-1 mt-4 2xl:mt-5 md:mt-1 md:w-full xl:flex-row md:justify-around'>
+             <div className='flex  gap-3'>
+              <Button  onClick={() => props.onNavigate('PREV')}>Anterior</Button>
+              <Button onClick={() => props.onNavigate('NEXT')}>Próximo</Button>
+              <Button onClick={() => props.onNavigate('TODAY')}>Dia atual</Button>
+             </div>
+              <div className='flex  gap-3'>
+              <Button onClick={openCreateModal}>Criar Evento </Button>
+              <Button onClick={() => props.onView('month')}>Mês</Button>
+              <Button onClick={() => props.onView('agenda')}>Agenda</Button>
+              </div>
+             <div className='flex  gap-3'>
+      
+              <ThemeToggleButton />
+             </div>
+              </div>
+             
+            </div>
+          ),}}
+          messages={{
+            showMore: (total) => `+${total} mais`,
+            noEventsInRange : 'Não há nenhum evento agendado no momento.'
+          }}
+      //.rbc-event .rbc-day-slot .rbc-toolbar .rbc-header .rbc-today .rbc-day-bg  .rbc-off-range-bg .rbc-button-link   .rbc-agenda-empty
       />
-
     </div>
   );
 };
