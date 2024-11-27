@@ -149,10 +149,8 @@ const CalendarStructure: React.FC = () => {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`
-
         }
       });
-
       if (!response.ok) {
         throw new Error('Erro ao deletar evento');
       }
@@ -192,12 +190,12 @@ const CalendarStructure: React.FC = () => {
         isOpen={isPopupOpen}
         events={showMoreEvents}
         onClose={() => setIsPopupOpen(false)}
+        isDarkMode={isDarkMode}
         onSelectEvent={(event) => {
           selectEvent(event);
           setIsPopupOpen(false);
-          
-        }}
-      />
+
+        } } />
 
       {/* Modal de edição de eventos */}
       <EventModal
@@ -220,7 +218,7 @@ const CalendarStructure: React.FC = () => {
         style={{ height: '100%', width:'100%'}}
         onSelectEvent={selectEvent}
         onShowMore={(events, date) => handleShowMore(events)} // Lidando com "more"
-        className='.rbc-month-view'
+        className='.rbc-month-view '
         views={['month', 'agenda']}
         step={60}
         culture='pt-BR'
@@ -231,7 +229,7 @@ const CalendarStructure: React.FC = () => {
             //grid grid-cols-1 p-4 gap-2 
             <div className='flex flex-col-reverse items-center  md:flex bg-card md:items-center'>
                <span className='text-base md:text-xl 2xl:text-3xl font-bold capitalize p-1 2xl:mt-2 2xl:mb-2'>{props.label}</span>
-              <div className='flex flex-col gap-2 md:flex  md:gap-5 md:items-center p-1 mt-4 2xl:mt-5 md:mt-1 md:w-full xl:flex-row md:justify-around'>
+              <div className='flex flex-col gap-2 md:flex  md:gap-5 items-center p-1 mt-4 2xl:mt-5 md:mt-1 md:w-full xl:flex-row md:justify-around'>
              <div className='flex  gap-3'>
               <Button  onClick={() => props.onNavigate('PREV')}>Anterior</Button>
               <Button onClick={() => props.onNavigate('NEXT')}>Próximo</Button>
@@ -243,7 +241,6 @@ const CalendarStructure: React.FC = () => {
               <Button onClick={() => props.onView('agenda')}>Agenda</Button>
               </div>
              <div className='flex  gap-3'>
-      
               <ThemeToggleButton />
              </div>
               </div>
@@ -254,6 +251,24 @@ const CalendarStructure: React.FC = () => {
             showMore: (total) => `+${total} mais`,
             noEventsInRange : 'Não há nenhum evento agendado no momento.'
           }}
+          eventPropGetter={(event) => {
+            const isToday =
+              new Date(event.start).toDateString() === new Date().toDateString();
+          
+            const baseClasses = 'rounded text-white shadow-sm transition-all';
+            const todayClasses = 'bg-blue-500 .hover:bg-blue-700';
+            const defaultClasses = 'bg-gray-400 .hover:bg-gray-600';
+            const selectedClasses = ''; // Para eventos selecionados
+          
+            const appliedClasses = isToday
+              ? `${todayClasses} ${selectedClasses}`
+              : `${defaultClasses} ${selectedClasses}`;
+          
+            return {
+              className: `${baseClasses} ${appliedClasses}`,
+            };
+          }}
+          
       //.rbc-event .rbc-day-slot .rbc-toolbar .rbc-header .rbc-today .rbc-day-bg  .rbc-off-range-bg .rbc-button-link   .rbc-agenda-empty
       />
     </div>

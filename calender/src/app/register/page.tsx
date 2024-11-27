@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useRef, FormEvent, useState } from "react";
+import { useRef, FormEvent, useState, useEffect } from "react";
 import image from "/assets/eu.png"
 import ErrorNotification from "@/components/erronotification";
 import SuccessNotification from "@/components/successnotification";
@@ -42,21 +42,35 @@ function Cadastro() {
           password
         }),
       });
-
-      if (response.ok) {
+      if (response.status === 201) {
         setSucesse("Usuário Cadastrado com sucesso");
         clearInput()
 
-      } else {
-        setError("Erro ao cadastrar usuário");
+      } 
+      if(response.status === 400){
+        setError('E-mail já cadastrado');
         clearInput()
       }
+      
     } catch (err) {
       setError("Erro ao conectar com o servidor");
       clearInput()
     }
   }
-
+  useEffect(()=>{
+    let timer: NodeJS.Timeout
+    if (error) {
+      setTimeout(() => {
+        setError(null); // Remove o erro após 2 segundos
+      },5000);
+    }
+    if(sucess){
+      setTimeout(()=>{
+        setSucesse(null)
+      },5000)
+    }
+    return ()=> clearTimeout(timer)
+  },[error,sucess])
   return (
     <div className="bg-background h-screen flex items-center justify-center">
       {error && <ErrorNotification message={error} onClose={() => setError(null)} />}
@@ -87,6 +101,7 @@ function Cadastro() {
               type="password"
               placeholder="Senha"
               className="w-4/5 md:w-full md:text-xl  xl:text-sm xl:w-4/5   bg-input px-3 py-2 2xl:p-3 2xl:text-4xl border border-gray-300 rounded-md focus:outline-none"
+              autoComplete="current-password"
             />
             <button className="w-3/6 bg-button 2xl:p-3 2xl:text-4xl  text-buttonText py-2 px-4 rounded-md duration-200 hover:bg-buttonHover">
               Cadastrar-se

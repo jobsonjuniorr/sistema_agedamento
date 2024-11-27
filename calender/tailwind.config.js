@@ -22,7 +22,11 @@ module.exports = {
 		  buttonCalenderHover: 'var(--buttonCalenderHover)',
 		  cardButtonHeader: 'var(--cardButtonHeader)',
 		},
+		fontFamily:{
+			poppins: ['Poppins'],
+		  }
 	  },
+	  
 	},
 	plugins: [require('tailwindcss-animate')],
   };

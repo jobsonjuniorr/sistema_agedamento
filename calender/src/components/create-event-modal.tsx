@@ -31,14 +31,14 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({ isOpen, onClose, on
 
   return (
     <div
-      className={`flex items-start justify-center absolute opacity-95 z-50 h-screen w-full ${
+      className={`flex items-start justify-center absolute opacity-90 z-50 h-screen w-full ${
         isDarkMode ? 'bg-black' : 'bg-white'
       }`}
     >
       <div
         className={`${
-          isDarkMode ? 'bg-slate-950 text-white' : 'bg-slate-100 text-black'
-        } p-6 rounded-md shadow-lg flex items-center justify-center flex-col mt-6 w-2/4 h-3/4`}
+          isDarkMode ? 'bg-background text-text' : 'bg-background text-text'
+        } p-6 rounded-md shadow-lg flex items-center justify-center flex-col w-full h-full md:mt-6 md:w-3/4 xl:w-2/4 md:h-3/4`}
       >
         <h2 className="text-lg mb-4">Criar Novo Evento</h2>
         <form onSubmit={handleSave} className="flex flex-col w-2/4 gap-2 items-center justify-center">
@@ -70,7 +70,7 @@ const CreateEventModal: React.FC<CreateEventModalProps> = ({ isOpen, onClose, on
               isDarkMode ? 'bg-slate-800 text-white' : 'bg-slate-200 text-black'
             }`}
           />
-          <div className="flex justify-around items-center w-full">
+          <div className="flex justify-around gap-3 items-center w-full">
             <button
               type="submit"
               className={`${
