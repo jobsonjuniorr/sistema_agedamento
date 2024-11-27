@@ -93,9 +93,15 @@ app.delete('/events/:id', verificarToken, async (req, res) => {
 app.post('/cadastro', async (req, res) => {
   const { name, email, password } = req.body;
   if(name =='' || email == '' || password ==''){
-    console.error('Erro campos vazios')
+    return res.status(400).json({ error: 'Todos os campos são obrigatórios' });
   }
-  try {
+ 
+  try { 
+   const [rows] = await connectionMysql.query('SELECT * FROM users WHERE email = ?',[email])
+    if(rows.length > 0){
+      return res.status(400).json({ error: 'E-mail já cadastrado' });
+    }  
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -104,7 +110,7 @@ app.post('/cadastro', async (req, res) => {
       [name, email, hashedPassword]
     );
 
-    res.status(201).json({ id: result.insertId, name, email });
+    return res.status(201).json({ id: result.insertId, name, email });
   } catch (err) {
     console.error('Erro ao cadastrar usuário:', err);
     res.status(500).json({ error: 'Erro ao cadastrar usuário' });
