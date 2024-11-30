@@ -99,5 +99,5 @@
   .custom-event:hover {
     @apply bg-[var(--buttonHover)] text-white;
   }
-
+  
 }

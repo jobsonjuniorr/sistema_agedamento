@@ -49,6 +49,37 @@ app.post('/events', verificarToken, async (req, res) => {
   }
 });
 
+app.get('/agendametos', async(req,res)=>{
+  const  query = `
+  SELECT
+       DATE_FORMAT(start, '%Y-%m') AS mes,
+       COUNT(*) AS total
+  FROM 
+      eventos
+  GROUP BY
+      mes
+  ORDER BY
+      mes`;
+
+  try{
+    const [results] = await connectionMysql.query(query)
+    res.json(results)
+  }catch(error){
+    console.error('Erro ao buscar o agendameto do mês',error)
+    res.status(500).json({error:'Erro ao buscar agendametos'})
+  }
+})
+
+app.get('/dadosgrafic', async(req,res)=>{
+  const query = `SELECT * FROM eventos`
+  try{
+    const [result] = await connectionMysql.query(query)
+    res.json(result)
+  }catch(error){
+    console.error("Dados não encontrados", error)
+    res.status(500).json({message:'Erro na exibição dos evetos'})
+  }
+})
 // Atualizar evento
 app.put('/events/:id', verificarToken, async (req, res) => {
   const { id } = req.params;
