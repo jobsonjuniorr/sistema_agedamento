@@ -4,9 +4,9 @@ import React from 'react';
 
 interface EventPopupProps {
   isOpen: boolean;
-  events: { id: number; title: string; start: Date; end: Date }[];
+  events: { id: number; title: string; start: Date; end: Date; name: string ; value: string }[];
   onClose: () => void;
-  onSelectEvent: (event: { id: number; title: string; start: Date; end: Date }) => void;
+  onSelectEvent: (event: { id: number; title: string; start: Date; end: Date, name: string; value: string }) => void;
   isDarkMode : boolean; 
 }
 
@@ -24,7 +24,8 @@ const EventPopup: React.FC<EventPopupProps> = ({ isOpen, events, onClose, onSele
               onClick={() => onSelectEvent(event)}
               className = {`cursor-pointer hover:bg-buttonCalenderHover p-2 rounded ${isDarkMode? 'text-text': 'text-text'}`}
             >
-              {event.title} ({new Date(event.start).toLocaleTimeString()} - {new Date(event.end).toLocaleTimeString()})
+              {event.title} {event.name} {event.value}
+              ({new Date(event.start).toLocaleTimeString()} - {new Date(event.end).toLocaleTimeString()})
             </li>
           ))}
         </ul>

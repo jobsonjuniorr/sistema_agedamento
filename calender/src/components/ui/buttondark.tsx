@@ -7,7 +7,7 @@ const ThemeToggleButton: React.FC = () => {
   const { isDarkMode, toggleTheme } = useTheme();
 
   return (
-    <button className='bg-button text-text p-1 w-28 2xl:w-40 2xl:text-2xl 2xl:p-3 md:p-2 md:w-32 rounded text-lg duration-200 hover:bg-buttonHover' onClick={toggleTheme}>
+    <button className='bg-button text-text p-1 text-sm md:text-bas w-24 2xl:w-40 2xl:text-2xl 2xl:p-3 md:p-2 md:w-32 rounded md:text-lg duration-200 hover:bg-buttonHover' onClick={toggleTheme}>
       {isDarkMode ? <FontAwesomeIcon icon={faSun} color='#fff'/>
       
       :

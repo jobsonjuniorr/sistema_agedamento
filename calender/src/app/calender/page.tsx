@@ -10,6 +10,8 @@ import EventPopup from '@/components/schedules';
 import  {Button}  from '@/components/ui/button';
 import { useTheme } from '@/theremcontext';
 import ThemeToggleButton from '@/components/ui/buttondark';
+import { Link } from 'react-router-dom';
+
 const locales = {
   'pt-BR': ptBR,
 };
@@ -27,6 +29,8 @@ interface Event {
   title: string;
   start: Date;
   end: Date;
+  name: string; 
+  value: string
 }
 
 const CalendarStructure: React.FC = () => {
@@ -74,8 +78,8 @@ const CalendarStructure: React.FC = () => {
     }
   };
 
-  const addOrUpdateEvent = async (updatedEvent: { title: string; start: string; end: string }) => {
-    const { title, start, end } = updatedEvent;
+  const addOrUpdateEvent = async (updatedEvent: { title: string; start: string; end: string; name: string; value: string }) => {
+    const { title, start, end, name, value } = updatedEvent;
     const startDate = new Date(start);
     const endDate = new Date(end);
     const token = localStorage.getItem('token');
@@ -97,7 +101,7 @@ const CalendarStructure: React.FC = () => {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ title, start: startDate.toISOString(), end: endDate.toISOString() }),
+            body: JSON.stringify({ title, start: startDate.toISOString(), end: endDate.toISOString(), name, value }),
           });
 
           if (!response.ok) {
@@ -108,7 +112,7 @@ const CalendarStructure: React.FC = () => {
           setSelectedEvent(null);
         } else {
 
-          const newEventWithId: Event = { id: events.length + 1, title, start: startDate, end: endDate };
+          const newEventWithId: Event = { id: events.length + 1, title, start: startDate, end: endDate, name, value };
           setEvents([...events, newEventWithId]);
 
 
@@ -118,7 +122,7 @@ const CalendarStructure: React.FC = () => {
               'Content-Type': 'application/json',
               'Authorization': `Bearer ${token}`,
             },
-            body: JSON.stringify({ title, start: startDate.toISOString(), end: endDate.toISOString() }),
+            body: JSON.stringify({ title, start: startDate.toISOString(), end: endDate.toISOString(), name, value }),
           });
 
           if (!response.ok) {
@@ -242,6 +246,9 @@ const CalendarStructure: React.FC = () => {
               </div>
              <div className='flex  gap-3'>
               <ThemeToggleButton />
+              <Button>
+              <Link to={"/grafic"}>Gráficos</Link>
+              </Button>        
              </div>
               </div>
              

@@ -19,6 +19,7 @@
     --defaultMonth: #d6d8db; /* Cinza claro para outros meses */
     --buttonCalenderHover: #0056b3; /* Azul escuro para hover no botão do calendário */
     --cardButtonHeader: #f8f9fa; /* Cor clara para os botões no cabeçalho */
+    --borderText: #2563eb;
 }
   body.dark-mode {
     --background: #121212;
@@ -35,6 +36,7 @@
     --defaultMonth: #424242; 
     --buttonCalenderHover: #1565c0; 
     --cardButtonHeader: #292929; 
+    --borderText: #2563eb;
 }
 
   body {

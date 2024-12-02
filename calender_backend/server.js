@@ -32,16 +32,16 @@ app.get('/events', verificarToken, async (req, res) => {
 
 // Criar evento
 app.post('/events', verificarToken, async (req, res) => {
-  const { title, start, end } = req.body;
+  const { title, start, end, name, value } = req.body;
   const startFormatted = format(new Date(start), 'yyyy-MM-dd HH:mm:ss');
   const endFormatted = format(new Date(end), 'yyyy-MM-dd HH:mm:ss');
 
   try {
     const [result] = await connectionMysql.query(
-      'INSERT INTO eventos (title, start, end) VALUES (?, ?, ?)',
-      [title, startFormatted, endFormatted]
+      'INSERT INTO eventos (title, start, end, name, value) VALUES (?, ?, ?, ?, ?)',
+      [title, startFormatted, endFormatted, name, value]
     );
-    const newEvent = { id: result.insertId, title, start: startFormatted, end: endFormatted };
+    const newEvent = { id: result.insertId, title, start: startFormatted, end: endFormatted, name, value };
     res.status(201).json(newEvent);
   } catch (err) {
     console.error('Erro ao criar evento:', err);
@@ -80,21 +80,23 @@ app.get('/dadosgrafic', async(req,res)=>{
     res.status(500).json({message:'Erro na exibição dos evetos'})
   }
 })
-// Atualizar evento
+
+
+
 app.put('/events/:id', verificarToken, async (req, res) => {
   const { id } = req.params;
-  const { title, start, end } = req.body;
+  const { title, start, end, name, value } = req.body;
 
   try {
     const startFormatted = format(new Date(start), 'yyyy-MM-dd HH:mm:ss');
     const endFormatted = format(new Date(end), 'yyyy-MM-dd HH:mm:ss');
 
     await connectionMysql.query(
-      'UPDATE eventos SET title = ?, start = ?, end = ? WHERE id = ?',
-      [title, startFormatted, endFormatted, id]
+      'UPDATE eventos SET title = ?, start = ?, end = ?, name = ?, value = ? WHERE id = ?',
+      [title, startFormatted, endFormatted, name, value, id]
     );
 
-    res.status(200).json({ id, title, start, end });
+    res.status(200).json({ id, title, start, end, name, value });
   } catch (err) {
     console.error('Erro ao atualizar evento:', err);
     res.status(500).json({ error: 'Erro ao atualizar evento' });

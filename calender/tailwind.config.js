@@ -21,6 +21,7 @@ module.exports = {
 		  defaultMonth: 'var(--defaultMonth)',
 		  buttonCalenderHover: 'var(--buttonCalenderHover)',
 		  cardButtonHeader: 'var(--cardButtonHeader)',
+		  borderText: 'var(--borderText)'
 		},
 		fontFamily:{
 			poppins: ['Poppins'],
