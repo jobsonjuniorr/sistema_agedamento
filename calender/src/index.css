@@ -101,5 +101,7 @@
   .custom-event:hover {
     @apply bg-[var(--buttonHover)] text-white;
   }
-  
+  .recharts-legend-item-text{
+    @apply capitalize font-bold text-sm flex
+  }
 }

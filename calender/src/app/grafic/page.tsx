@@ -101,15 +101,24 @@ function Grafic() {
   }, {} as Record<string, number>)
   const valuesByMonthArray = Object.entries(valuesMonthe).map(([month, total]) => ({
     month,
-    total
+    total,
+
   }))
 
-  const DadosValue = valuesByMonthArray.map(({ month, total }) => ({
-    month, // Nome do mês
-    total, // Valor total gerado
-    year: new Date().getFullYear(), // Adiciona o ano atual (opcional)
-  }));
-
+  const DadosValue = valuesByMonthArray
+    .map(({ month, total }) => ({
+      month,
+      total,
+      year: parseInt(month.split(" ")[1], 10), // Extrai o ano do texto do mês
+      monthIndex: monthNames.findIndex((m) => m.toLowerCase() === month.split(" ")[0].toLowerCase()), // Encontra o índice do mês
+    }))
+    .sort((a, b) => {
+      // Ordena por ano e, em seguida, por índice do mês
+      if (a.year !== b.year) {
+        return a.year - b.year;
+      }
+      return a.monthIndex - b.monthIndex;
+    });
 
   return (
     <div className="bg-background h-screen w-full">
@@ -121,30 +130,65 @@ function Grafic() {
       </div>
 
       <div className="flex flex-col items-center justify-center">
-        <h2>Total Gerado: {totalValue.toFixed(2)}</h2>
-        <ChartContainer config={chartConfig} className="h-[200px]  w-full bg-card rounded-md border-none" >
-          <BarChart data={chartData}>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(value, index) => {
-                const dataPoint = chartData[index];
-                if (!dataPoint) return value
-                return `${value.slice(0, 3)} ${dataPoint.year}`
-              }
-              }
-            />
-            <ChartTooltip content={<CustomTooltip payload={undefined} />} />
-            <Bar dataKey="total" fill="var(--button)" radius={4} />
-          </BarChart>
-        </ChartContainer>
+        
+        <div className="flex w-full flex-col md:flex-col xl:flex-row items-center justify-evenly gap-4 p-2 ">
 
-        <div className="flex w-full flex-col md:flex-col xl:flex-row items-center justify-center gap-4 p-4">
-          <ChartContainer config={chartConfigValue} className="w-full h-[300px] md:w-11/12 xl:w-2/4 bg-card rounded-md border-none p-2">
+          <h2 className="w-full md:w-11/12  xl:w-1/5  h-[230px] bg-card rounded-md p-2 flex flex-col items-center justify-center text-text font-semibold text-base ">
+
+            Receita total
+            <p className="font-bold text-base text-text">
+              R$ {totalValue.toFixed(2)}
+            </p>
+
+          </h2>
+          <ChartContainer config={chartConfig} className="w-full h-[230px] md:w-11/12 xl:w-4/5 bg-card rounded-md border-none p-2" >
+            <BarChart data={chartData}>
+            <text
+                x="50%"
+                y="10%"
+                textAnchor="middle"
+                fill="var(--text)"
+                fontSize="16"
+                fontWeight="bold"
+
+              >
+                Total de agendamento do mês
+              </text>
+              <CartesianGrid vertical={false} />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(value, index) => {
+                  const dataPoint = chartData[index];
+                  if (!dataPoint) return value
+                  return `${value.slice(0, 3)}`
+                }
+                }
+              />
+              <ChartTooltip content={<CustomTooltip payload={undefined} />} />
+              <Bar dataKey="total" fill="var(--button)" radius={4} />
+             
+            </BarChart>
+          </ChartContainer>
+        </div>
+
+        <div className="flex w-full flex-col md:flex-col xl:flex-row items-center justify-center gap-4 p-2">
+
+          <ChartContainer config={chartConfigValue} className="w-full  .recharts-legend-item-text  h-[300px] md:w-11/12 xl:w-2/4 bg-card rounded-md border-none p-2">
             <BarChart data={DadosValue}>
+              <text
+                x="50%"
+                y="10%"
+                textAnchor="middle"
+                fill="var(--text)"
+                fontSize="16"
+                fontWeight="bold"
+
+              >
+                Total de receita gerado no mês
+              </text>
               <CartesianGrid vertical={false} />
               <XAxis
                 dataKey="month"
@@ -159,6 +203,8 @@ function Grafic() {
               />
               <ChartTooltip content={<CustomValue payload={undefined} />} />
               <Bar dataKey="total" fill="var(--button)" radius={4} />
+
+            
             </BarChart>
           </ChartContainer>
 
@@ -167,10 +213,10 @@ function Grafic() {
             {latestEvents.map((event, index) => (
               <div key={index} className="flex items-center justify-between border-b-2 border-borderText">
                 <div className="flex flex-col ">
-                <p>{event.name}</p>
-                <p>{event.title}</p>
+                  <p className="text-text font-semibold text-base">{event.name}</p>
+                  <p className="text-text font-semibold text-base">{event.title}</p>
                 </div>
-                <p className="font-bold text-base text-text">R${event.value}</p>
+                <p className="font-bold text-lg text-text">R$ {Number(event.value).toFixed(2)}</p>
               </div>
             ))}
           </div>
