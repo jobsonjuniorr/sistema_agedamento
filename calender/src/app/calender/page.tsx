@@ -247,7 +247,7 @@ const CalendarStructure: React.FC = () => {
              <div className='flex  gap-3'>
               <ThemeToggleButton />
               <Button>
-              <Link to={"/grafic"}>Gráficos</Link>
+              <Link to={"/graphic"}>Gráficos</Link>
               </Button>        
              </div>
               </div>
