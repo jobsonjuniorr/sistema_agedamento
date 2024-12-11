@@ -7,7 +7,7 @@ import PrivateRoute from './app/privateroute.tsx';
 import Graphic from './app/graphic/page.tsx';
 function App() {
   return (
-  <Router >
+  <Router>
    
     <Routes>
       <Route path="/" element={<HomePage />} />

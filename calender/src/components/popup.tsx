@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 
 interface EventModalProps {
   isOpen: boolean;
-  event: any; // Substitua 'any' por um tipo específico para o seu evento
+  event: any; 
   onClose: () => void;
-  onSave: (updatedEvent: any) => void; // Substitua 'any' pelo tipo correto
-  onDelete: (eventId: number) => void; // Substitua 'number' pelo tipo correto
-  isDarkMode: boolean; // Propriedade para controlar o modo escuro ou claro
+  onSave: (updatedEvent: any) => void; 
+  onDelete: (eventId: number) => void; 
+  isDarkMode: boolean; 
 }
 
 const EventModal: React.FC<EventModalProps> = ({ isOpen, event, onClose, onSave, onDelete, isDarkMode }) => {
@@ -16,7 +16,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, event, onClose, onSave,
   const [end, setEnd] = useState(event ? formatInputDateTime(event.end) : '');
   const [name, setName] = useState(event ? event.name : '');
   const [value, setValue] = useState(event ? event.value : '');
-
+  
   useEffect(() => {
     if (event) {
       setTitle(event.title);
@@ -26,6 +26,7 @@ const EventModal: React.FC<EventModalProps> = ({ isOpen, event, onClose, onSave,
       setValue(event.value)
     }
   }, [event]);
+
 
   // Função para formatar a data e hora, ajustando o fuso horário
   function formatInputDateTime(date: { getTime: () => number; getTimezoneOffset: () => number; }) {

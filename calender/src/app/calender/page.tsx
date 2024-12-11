@@ -11,6 +11,7 @@ import  {Button}  from '@/components/ui/button';
 import { useTheme } from '@/theremcontext';
 import ThemeToggleButton from '@/components/ui/buttondark';
 import { Link } from 'react-router-dom';
+import ErrorNotification from '@/components/erronotification';
 
 const locales = {
   'pt-BR': ptBR,
@@ -42,7 +43,7 @@ const CalendarStructure: React.FC = () => {
   const [newEvent, setNewEvent] = useState({ title: '', start: '', end: '' });
   const [showMoreEvents, setShowMoreEvents] = useState<Event[]>([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
-
+  const [error, setError] = useState<string | null>(null);
   const fetchEvents = async () => {
     const token = localStorage.getItem('token');
     //remove caso erros 
@@ -74,7 +75,7 @@ const CalendarStructure: React.FC = () => {
 
       setEvents(formattedEvents);
     } catch (error) {
-      console.error('Erro ao carregar eventos:', error);
+      setError("Erro na comunicação com o servidor.")
     }
   };
 
@@ -183,6 +184,7 @@ const CalendarStructure: React.FC = () => {
 
   return (
     <div className='w-full h-screen duration-300'>
+    
       {/* Modal de criação de eventos */}
       <CreateEventModal
         isOpen={showCreateModal}
@@ -198,8 +200,8 @@ const CalendarStructure: React.FC = () => {
         onSelectEvent={(event) => {
           selectEvent(event);
           setIsPopupOpen(false);
-
         } } />
+
 
       {/* Modal de edição de eventos */}
       <EventModal
@@ -243,6 +245,7 @@ const CalendarStructure: React.FC = () => {
               <Button onClick={openCreateModal}>Criar Evento </Button>
               <Button onClick={() => props.onView('month')}>Mês</Button>
               <Button onClick={() => props.onView('agenda')}>Agenda</Button>
+              {error && <ErrorNotification message={error} onClose={() => setError(null)} />}
               </div>
              <div className='flex  gap-3'>
               <ThemeToggleButton />

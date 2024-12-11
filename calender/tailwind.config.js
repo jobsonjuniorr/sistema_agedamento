@@ -25,7 +25,27 @@ module.exports = {
 		},
 		fontFamily:{
 			poppins: ['Poppins'],
-		  }
+		  },
+		keyframes:{
+			cardAnimationRight: {
+				'0%' : {opacity:'0',transform:'translateX(95px)'},
+				'100%':{opacity:'1',transform:'translateX(0)'},
+			},
+			cardAnimationLeft: {
+				'0%' : {opacity:'0',transform:'translateX(-95px)'},
+				'100%':{opacity:'1',transform:'translateX(0)'},
+			},
+			opactiy: {
+				'0%':{ opacity:'0'},
+				'50%':{opacity:'0.5'},
+				'100%':{ opacity:'1'},
+			},
+		},
+		animation:{
+			cardanimationRight:'cardAnimationRight 1s ease-out forwards',
+			cardanimationLeft:'cardAnimationLeft 1.3s ease-out forwards',
+			opactiyCard: 'opactiy 2s ease-out forwards' 
+		}
 	  },
 	  
 	},

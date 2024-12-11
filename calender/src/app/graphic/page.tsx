@@ -162,10 +162,10 @@ function Graphic() {
             <select
               value={selectedYear}
               onChange={handleYearChange}
-              className=" rounded-md px-4 py-2 bg-background text-text"
+              className=" rounded-md  bg-input text-text w-1/4 h-10 text-center mb-1"
             >
               {[2023, 2024, 2025].map((year) => (
-                <option key={year} value={year}>
+                <option key={year} value={year} >
                   {year}
                 </option>
               ))}
@@ -196,10 +196,16 @@ function Graphic() {
                     return `${value.slice(0, 1)}`
                   }
                   }
+                  tick={{ fill: 'var(--text)', fontWeight: 'bold', fontSize: 14 }}
                 />
                 <ChartTooltip content={<CustomTooltip payload={undefined} />} />
-                <Bar dataKey="total" fill="var(--button)" radius={4} />
-
+                <Bar dataKey="total" fill="var(--button)" radius={4}
+                 isAnimationActive={true} animationBegin={0} animationDuration={1500} />
+                <Legend
+                  verticalAlign="top"
+                  height={36}
+                  wrapperStyle={{ top: 0, left: '10%', transform: 'translateX(-50%)' }}
+                />
               </BarChart>
             </ChartContainer>
           </div>
@@ -224,7 +230,7 @@ function Graphic() {
           <select
             value={selectedYearValue}
             onChange={handleYearChangeValue}
-            className=" rounded-md px-2 py-2 bg-background text-text "
+            className=" rounded-md bg-input text-text w-1/4  md:w-1/12 h-10 text-center mb-1 "
           >
             {[2023, 2024, 2025].map((year) => (
               <option key={year} value={year}>
@@ -243,29 +249,32 @@ function Graphic() {
                 fontWeight="bold"
 
               >
-                Receita gerado no mês
+                Receita gerada no mês
               </text>
               <CartesianGrid vertical={false} />
               <XAxis
+
                 dataKey="month"
                 tickLine={false}
                 tickMargin={10}
                 axisLine={false}
+                
                 tickFormatter={(value, index) => {
                   const dataPoint = DadosValue[index];
                   if (!dataPoint) return value;
                   return `${value.slice(0, 1).toUpperCase()}`;
                 }}
+                tick={{ fill: 'var(--text)', fontWeight: 'bold', fontSize: 14 }}
 
               />
-              <ChartTooltip content={<CustomValue payload={undefined} />} />
-
-              <Bar dataKey="total" fill="var(--button)" radius={4} />
-
+              <ChartTooltip  content={<CustomValue payload={undefined}   />} />
+              <Bar dataKey="total" fill="var(--button)" radius={4}  isAnimationActive={true} animationBegin={0} animationDuration={1500}/>
+             
               <Legend
                 verticalAlign="top"
                 height={36}
                 wrapperStyle={{ top: 0, left: '10%', transform: 'translateX(-50%)' }}
+                
               />
             </BarChart>
           </ChartContainer>

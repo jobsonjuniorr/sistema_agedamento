@@ -59,7 +59,7 @@ function Login() {
       localStorage.setItem("token", token);
       navigate("/calender");
     } catch (err: any) {  
-      setError(err.message);
+      setError("Erro ao conectar com o servidor");
     }
   }
 

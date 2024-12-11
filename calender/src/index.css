@@ -5,24 +5,24 @@
 
 @layer base {
   :root {
-    --background: #f8f9fa; /* Um branco suave */
-    --card: #ffffff; /* Branco puro para maior contraste */
-    --paragraph: #343a40; /* Cinza escuro para texto */
-    --button: #007bff; /* Azul para chamar a atenção */
-    --buttonText: #ffffff; /* Branco para contraste no botão */
-    --buttonHover: #0056b3; /* Azul mais escuro no hover */
-    --text: #212529; /* Cinza escuro para legibilidade */
-    --link: #007bff; /* Azul para links */
-    --input: #e9ecef; /* Cinza claro para entradas */
-    --today: #f1f8ff; /* Azul claro para destacar o dia atual */
-    --month: #6c757d; /* Cinza médio para dias do mês */
-    --defaultMonth: #d6d8db; /* Cinza claro para outros meses */
-    --buttonCalenderHover: #0056b3; /* Azul escuro para hover no botão do calendário */
-    --cardButtonHeader: #f8f9fa; /* Cor clara para os botões no cabeçalho */
+    --background: #f8f9fa; /* #ccd5dd*/
+    --card: #ffffff;
+    --paragraph: #343a40; 
+    --button: #007bff;
+    --buttonText: #ffffff; 
+    --buttonHover: #0056b3; 
+    --text: #212529; 
+    --link: #007bff;
+    --input: #e9ecef; 
+    --today: #f1f8ff; 
+    --month: #6c757d;
+    --defaultMonth: #d6d8db;
+    --buttonCalenderHover: #0056b3;
+    --cardButtonHeader: #f8f9fa; 
     --borderText: #2563eb;
 }
   body.dark-mode {
-    --background: #121212;
+    --background: #0a0a0a; 
     --card: #1f1f1f; 
     --paragraph: #e0e0e0;
     --button: #1e88e5; 
@@ -42,7 +42,24 @@
   body {
     @apply bg-[var(--background)] text-[var(--paragraph)] font-poppins ;
   }
-
+  
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 10px;
+ 
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: var(--defaultMonth);
+    border-radius: 10px;
+  }
+  
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: var(--button);
+    border-radius: 10px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: var(--buttonCalenderHover);
+  }
 }
 
 /* Estilizações do React Big Calendar */
