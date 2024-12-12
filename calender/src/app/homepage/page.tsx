@@ -1,14 +1,12 @@
 import { Link } from "react-router-dom"
-import { useRef } from "react";
 import Image from "/assets/eu.png"
 import ImageCalender from "/assets/calender.png"
 import ImageDashBord from "/assets/dashbord_info.png"
 import { MobileMenu } from "@/components/ui/dorpdown"
-import { UseIntersectionObserver } from "@/components/useIntersectionObserver"
-export function HomePage() {
-    const  cardRef1 = useRef<HTMLDivElement>(null);
+import AnimatedCard from "@/components/ui/animatecard";
 
-    const isVisible1 = UseIntersectionObserver(cardRef1,{threshold: 0.2})
+export function HomePage() {
+
     return (
         <div className="h-screen w-full overflow-y-auto custom-scrollbar ">
             <header className="flex justify-around bg-background border-b border-b-button p-3 shadow-sm shadow-button ">
@@ -17,12 +15,12 @@ export function HomePage() {
                     <img className="h-11 w-11 rounded-full" src={Image} alt="Ícone" />
                 </div>
                 <div className="md:hidden">
-                <MobileMenu/>
+                    <MobileMenu />
                 </div>
                 <ul className=" hidden md:flex justify-evenly items-center gap-3 w-2/5 ">
                     <li className="text-text hover:underline hover:text-buttonHover cursor-pointer">Home</li>
-                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer">Produto</li>
-                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer"> Serviço</li>
+                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer">Serviço</li>
+                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer">Dashbord</li>
                     <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer"><Link to={'/login'}>Login</Link></li>
                     <button className="p-3 bg-button rounded-lg text-text hover:bg-buttonHover"><Link to={'/register'}>Cadastra-se!</Link></button>
                 </ul>
@@ -31,9 +29,9 @@ export function HomePage() {
             <section className="h-full flex  items-center justify-center ">
                 <div className="w-full md:w-11/12 p-4 bg-background rounded-xl flex flex-col items-center justify-center gap-1">
                     <h2 className="w-full md:w-4/6 indent-3 font-semibold text-text  md:text-center  animate-cardanimationRight ">
-               
+
                         O sistema CLT Agendamentos permite gerenciar horários de forma eficiente, com um dashboard intuitivo que organiza informações como status de agendamentos e relatórios.
-          
+
                     </h2>
                     <div className="flex items-center justify-center p-2 ">
                         <img className="w-full md:w-5/6 rounded-2xl animate-cardanimationLeft" src={ImageCalender} alt="Imagem do DashBord" />
@@ -44,31 +42,36 @@ export function HomePage() {
 
             <section className="h-full w-full flex items-center justify-center cardAnimation">
                 <div className=" w-11/12 h-full rounded-xl flex flex-col p-2 bg-card items-center justify-center gap-4 md:gap-0 animate-wiggle">
-                    <div className="w-full h-52 flex justify-start animate-opactiyCard">
-                        <div ref={cardRef1} className={`bg-link w-96 h-52 md:h-full flex flex-col justify-center items-center rounded-lg p-2 
-                             transition-transform duration-700 ${isVisible1? "animate-opactiyCard":"opacity-0"}`}>
+                    <div className="w-full h-52 flex justify-start ">
+                        <AnimatedCard>
                             <h1 className="font-bold  text-text text-xl">Configurações Flexíveis</h1>
                             <p className="w-full indent-3 font-semibold text-text">
-                            Personalize o sistema de acordo com as suas necessidades.
+                                Personalize o sistema de acordo com as suas necessidades.
                             </p>
-                        </div>
+                        </AnimatedCard>
+
+
                     </div>
 
                     <div className="w-full h-52 flex justify-center">
-                        <div className="bg-link  w-96 h-52 md:h-full flex flex-col justify-center items-center rounded-xl p-2">
+                        <AnimatedCard>
                             <h1 className="font-bold text-xl  text-text">Agendamentos Simples</h1>
                             <p className="w-full indent-3 font-semibold text-text">
-                            Realize agendamentos de forma prática e rápida, com interface intuitiva e feedback instantâneo.
+                                Realize agendamentos de forma prática e rápida, com interface intuitiva e feedback instantâneo.
                             </p>
-                        </div>
+
+                        </AnimatedCard>
+
                     </div>
                     <div className="w-full h-52 flex justify-end ">
-                        <div className="bg-link   w-96 h-52 md:h-full flex flex-col justify-center items-center rounded-xl p-2 ">
+
+                        <AnimatedCard>
                             <h1 className="font-bold text-xl  text-text">Dashboard Interativo</h1>
                             <p className="w-full indent-3 font-semibold text-text">
-                            Visualize informações como agendamentos mensais, total arrecadado e histórico de agendamentos em tempo real.
+                                Visualize informações como agendamentos mensais, total arrecadado e histórico de agendamentos em tempo real.
                             </p>
-                        </div>
+                        </AnimatedCard>
+
                     </div>
 
                 </div>
@@ -77,7 +80,7 @@ export function HomePage() {
             <section className="h-full flex items-center justify-center">
                 <div className=" w-full md:w-11/12 p-4 rounded-xl flex flex-col md:flex-row items-center justify-center ">
                     <h2 className=" w-full md:w-4/6 indent-3 font-semibold text-text">
-                    Gere relatórios personalizados para acompanhar o desempenho e os dados do sistema ao longo do tempo.
+                        Gere relatórios personalizados para acompanhar o desempenho e os dados do sistema ao longo do tempo.
                     </h2>
                     <div className="flex items-center justify-center p-2 ">
                         <img className="w-full rounded-md" src={ImageDashBord} alt="Imagem do calender" />
@@ -87,11 +90,11 @@ export function HomePage() {
             <footer className="bg-card flex items-center justify-center p-1">
                 <div className="flex flex-col items-center justify-center">
                     <ul className="flex gap-3">
-                       
-                    <li><a href="https://github.com/jobsonjuniorr" target="_blank" className="text-text hover:underline hover:text-button">GitHub</a></li>  
-                    <li><a href="https://www.linkedin.com/in/jobson-junior-8b92492a9/" target="_blank" className="text-text hover:underline hover:text-button">LinkedIn</a></li>
-                    <li><a href="/terms" className="text-text hover:underline hover:text-button">Termos de Serviço</a></li>
-                     
+
+                        <li><a href="https://github.com/jobsonjuniorr" target="_blank" className="text-text hover:underline hover:text-button">GitHub</a></li>
+                        <li><a href="https://www.linkedin.com/in/jobson-junior-8b92492a9/" target="_blank" className="text-text hover:underline hover:text-button">LinkedIn</a></li>
+                        <li><a href="/terms" className="text-text hover:underline hover:text-button">Termos de Serviço</a></li>
+
                     </ul>
 
                     <p className="font-medium text-sm">Jobson Junior | jobson13j@gmail.com</p>
