@@ -7,14 +7,14 @@ interface AnimatedCardProps{
 }
 
 
-const AnimatedCard: React.FC<AnimatedCardProps> = ({children, className}) =>{
+export const AnimatedCard: React.FC<AnimatedCardProps> = ({children, className}) =>{
     const ref = useRef<HTMLDivElement>(null)
     const {contenteVisible} = UseIntersectionObserver(ref,{threshold: 0.2})
 
     return(
         <div
         ref={ref}
-        className={`bg-link w-96 h-52 md:h-full flex flex-col justify-center items-center rounded-lg p-2  transition-transform duration-700
+        className={`bg-link md:w-96 h-44 md:h-full flex flex-col justify-center items-center rounded-lg p-2  transition-transform duration-700
           ${
             contenteVisible ? "animate-scrollView" : "opacity-0 translate-x-0"
           } ${className}`}
@@ -23,5 +23,19 @@ const AnimatedCard: React.FC<AnimatedCardProps> = ({children, className}) =>{
       </div>
     )
 }
+ export const AnimatedVerse: React.FC<AnimatedCardProps> = ({children, className}) =>{
+  const ref = useRef<HTMLDivElement>(null)
+  const {contenteVisible} = UseIntersectionObserver(ref,{threshold: 0.2})
 
-export default AnimatedCard
+  return(
+      <div
+      ref={ref}
+      className={`w-full md:w-11/12 p-4 rounded-xl flex flex-col md:flex-row items-center justify-center 
+        ${
+          contenteVisible ? "animate-scrollView" : "opacity-0 translate-x-0"
+        } ${className}`}
+    >
+      {children}
+    </div>
+  )
+  }

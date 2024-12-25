@@ -3,13 +3,13 @@ import Image from "/assets/eu.png"
 import ImageCalender from "/assets/calender.png"
 import ImageDashBord from "/assets/dashbord_info.png"
 import { MobileMenu } from "@/components/ui/dorpdown"
-import AnimatedCard from "@/components/ui/animatecard";
+import {AnimatedCard, AnimatedVerse} from "@/components/ui/animatecard";
 
 export function HomePage() {
 
     return (
-        <div className="h-screen w-full overflow-y-auto custom-scrollbar ">
-            <header className="flex justify-around bg-background border-b border-b-button p-3 shadow-sm shadow-button ">
+        <div className="h-screen w-full overflow-y-auto custom-scrollbar">
+            <header className="flex justify-around bg-background border-b border-b-button p-2 shadow-sm shadow-butto">
                 <div className="flex flex-row-reverse items-center gap-2 ">
                     <h3>CLT Agendamentos</h3>
                     <img className="h-11 w-11 rounded-full" src={Image} alt="Ícone" />
@@ -26,7 +26,7 @@ export function HomePage() {
                 </ul>
             </header>
 
-            <section className="h-full flex  items-center justify-center ">
+            <section className="h-full flex  items-center justify-center  ">
                 <div className="w-full md:w-11/12 p-4 bg-background rounded-xl flex flex-col items-center justify-center gap-1">
                     <h2 className="w-full md:w-4/6 indent-3 font-semibold text-text  md:text-center  animate-cardanimationRight ">
 
@@ -40,52 +40,50 @@ export function HomePage() {
             </section>
 
 
-            <section className="h-full w-full flex items-center justify-center cardAnimation">
-                <div className=" w-11/12 h-full rounded-xl flex flex-col p-2 bg-card items-center justify-center gap-4 md:gap-0 animate-wiggle">
+            <section className="flex items-center justify-center ">
+                <div className=" w-11/12 h-full rounded-xl flex flex-col p-2 bg-card items-center justify-center gap-2 md:gap-0 animate-wiggle">    
                     <div className="w-full h-52 flex justify-start ">
                         <AnimatedCard>
                             <h1 className="font-bold  text-text text-xl">Configurações Flexíveis</h1>
-                            <p className="w-full indent-3 font-semibold text-text">
+                            <p className="w-full indent-3 font-semibold text-text p-2">
                                 Personalize o sistema de acordo com as suas necessidades.
                             </p>
                         </AnimatedCard>
 
 
                     </div>
-
                     <div className="w-full h-52 flex justify-center">
                         <AnimatedCard>
-                            <h1 className="font-bold text-xl  text-text">Agendamentos Simples</h1>
-                            <p className="w-full indent-3 font-semibold text-text">
+                            <h1 className="font-bold text-xl text-text">Agendamentos Simples</h1>
+                            <p className="w-full indent-3 font-semibold text-text p-2">
                                 Realize agendamentos de forma prática e rápida, com interface intuitiva e feedback instantâneo.
                             </p>
 
                         </AnimatedCard>
-
                     </div>
                     <div className="w-full h-52 flex justify-end ">
-
                         <AnimatedCard>
-                            <h1 className="font-bold text-xl  text-text">Dashboard Interativo</h1>
-                            <p className="w-full indent-3 font-semibold text-text">
+                            <h1 className="font-bold text-xl text-text">Dashboard Interativo</h1>
+                            <p className="w-full indent-3 font-semibold text-text p-2">
                                 Visualize informações como agendamentos mensais, total arrecadado e histórico de agendamentos em tempo real.
                             </p>
                         </AnimatedCard>
-
                     </div>
 
                 </div>
             </section>
 
             <section className="h-full flex items-center justify-center">
-                <div className=" w-full md:w-11/12 p-4 rounded-xl flex flex-col md:flex-row items-center justify-center ">
-                    <h2 className=" w-full md:w-4/6 indent-3 font-semibold text-text">
+               <AnimatedVerse>
+                
+               <h2 className=" w-full md:w-4/6 indent-3 font-semibold text-text">
                         Gere relatórios personalizados para acompanhar o desempenho e os dados do sistema ao longo do tempo.
                     </h2>
                     <div className="flex items-center justify-center p-2 ">
                         <img className="w-full rounded-md" src={ImageDashBord} alt="Imagem do calender" />
                     </div>
-                </div>
+               
+               </AnimatedVerse>
             </section>
             <footer className="bg-card flex items-center justify-center p-1">
                 <div className="flex flex-col items-center justify-center">
