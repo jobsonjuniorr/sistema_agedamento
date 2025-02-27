@@ -4,8 +4,18 @@ import ImageCalender from "/assets/calender.png"
 import ImageDashBord from "/assets/dashbord_info.png"
 import { MobileMenu } from "@/components/ui/dorpdown"
 import {AnimatedCard, AnimatedVerse} from "@/components/ui/animatecard";
+import {useRef } from "react";
 
 export function HomePage() {
+    const servicoRef = useRef<HTMLElement | null>(null);
+
+    const scrollToSection = () => {
+      servicoRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+    const dashbordRef = useRef<HTMLElement | null>(null);
+    const scrollToSectionDashbord = () => {
+        dashbordRef.current?.scrollIntoView({ behavior: "smooth" });
+      };
 
     return (
         <div className="h-screen w-full overflow-y-auto custom-scrollbar">
@@ -18,9 +28,9 @@ export function HomePage() {
                     <MobileMenu />
                 </div>
                 <ul className=" hidden md:flex justify-evenly items-center gap-3 w-2/5 ">
-                    <li className="text-text hover:underline hover:text-buttonHover cursor-pointer">Home</li>
-                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer">Serviço</li>
-                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer">Dashbord</li>
+                    <li className="text-text hover:underline hover:text-buttonHover cursor-pointer"><Link to={'/'}>Home</Link></li>
+                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer" onClick={scrollToSection}>Serviço</li>
+                    <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer" onClick={scrollToSectionDashbord}>Dashbord</li>
                     <li className="text-text hover:underline hover:text-buttonHover  cursor-pointer"><Link to={'/login'}>Login</Link></li>
                     <button className="p-3 bg-button rounded-lg text-text hover:bg-buttonHover"><Link to={'/register'}>Cadastra-se!</Link></button>
                 </ul>
@@ -40,7 +50,7 @@ export function HomePage() {
             </section>
 
 
-            <section className="flex items-center justify-center ">
+            <section className="flex items-center justify-center" id="servico" ref={servicoRef}>
                 <div className=" w-11/12 h-full rounded-xl flex flex-col p-2 bg-card items-center justify-center gap-2 md:gap-0 animate-wiggle">    
                     <div className="w-full h-52 flex justify-start ">
                         <AnimatedCard>
@@ -73,7 +83,7 @@ export function HomePage() {
                 </div>
             </section>
 
-            <section className="h-full flex items-center justify-center">
+            <section className="h-full flex items-center justify-center" id="dashbord" ref={dashbordRef}>
                <AnimatedVerse>
                 
                <h2 className=" w-full md:w-4/6 indent-3 font-semibold text-text">
